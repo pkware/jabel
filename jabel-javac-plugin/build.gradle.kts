@@ -4,7 +4,7 @@ plugins {
     signing
 }
 
-val jabelVersion: String by project
+val jabelVersion = project.property("jabelVersion") as String
 version = jabelVersion
 
 dependencies {
@@ -84,35 +84,30 @@ val String.isReleaseBuild
     get() = !contains("SNAPSHOT")
 
 val Project.releaseRepositoryUrl: String
-    get() = properties.getOrDefault(
-        "RELEASE_REPOSITORY_URL",
-
-        "https://oss.sonatype.org/service/local/staging/deploy/maven2",
-    ).toString()
+    get() = (findProperty("RELEASE_REPOSITORY_URL")
+        ?: "https://oss.sonatype.org/service/local/staging/deploy/maven2").toString()
 
 val Project.snapshotRepositoryUrl: String
-    get() = properties.getOrDefault(
-        "SNAPSHOT_REPOSITORY_URL",
-        "https://oss.sonatype.org/content/repositories/snapshots",
-    ).toString()
+    get() = (findProperty("SNAPSHOT_REPOSITORY_URL")
+        ?: "https://oss.sonatype.org/content/repositories/snapshots").toString()
 
 val Project.repositoryUsername: String
-    get() = properties.getOrDefault("NEXUS_USERNAME", "").toString()
+    get() = (findProperty("NEXUS_USERNAME") ?: "").toString()
 
 val Project.repositoryPassword: String
-    get() = properties.getOrDefault("NEXUS_PASSWORD", "").toString()
+    get() = (findProperty("NEXUS_PASSWORD") ?: "").toString()
 
 val Project.pomPackaging: String
-    get() = properties.getOrDefault("POM_PACKAGING", "jar").toString()
+    get() = (findProperty("POM_PACKAGING") ?: "jar").toString()
 
 val Project.pomName: String?
-    get() = properties["POM_NAME"]?.toString()
+    get() = findProperty("POM_NAME")?.toString()
 
 val Project.pomDescription: String?
-    get() = properties["POM_DESCRIPTION"]?.toString()
+    get() = findProperty("POM_DESCRIPTION")?.toString()
 
 val Project.pomArtifactId
-    get() = properties.getOrDefault("POM_ARTIFACT_ID", name).toString()
+    get() = (findProperty("POM_ARTIFACT_ID") ?: name).toString()
 
 fun MavenPom.setPkwareOrganization() {
     organization {
