@@ -75,8 +75,14 @@ publishing {
 }
 
 signing {
-    // Signing credentials are stored locally in the user's global gradle.properties file.
+    // Signing credentials are stored as secrets in GitHub.
     // See https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials for more information.
+    useInMemoryPgpKeys(
+        signingKeyId,
+        signingKey,
+        signingPassword,
+    )
+
     sign(publishing.publications["mavenJava"])
 }
 
@@ -85,17 +91,26 @@ val String.isReleaseBuild
 
 val Project.releaseRepositoryUrl: String
     get() = (findProperty("RELEASE_REPOSITORY_URL")
-        ?: "https://oss.sonatype.org/service/local/staging/deploy/maven2").toString()
+        ?: "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2").toString()
 
 val Project.snapshotRepositoryUrl: String
     get() = (findProperty("SNAPSHOT_REPOSITORY_URL")
-        ?: "https://oss.sonatype.org/content/repositories/snapshots").toString()
+        ?: "https://central.sonatype.com/repository/maven-snapshots/").toString()
 
 val Project.repositoryUsername: String
     get() = (findProperty("NEXUS_USERNAME") ?: "").toString()
 
 val Project.repositoryPassword: String
     get() = (findProperty("NEXUS_PASSWORD") ?: "").toString()
+
+val Project.signingKeyId: String
+    get() = (findProperty("SIGNING_KEY_ID") ?: "").toString()
+
+val Project.signingKey: String
+    get() = (findProperty("SIGNING_KEY") ?: "").toString()
+
+val Project.signingPassword: String
+    get() = (findProperty("SIGNING_PASSWORD") ?: "").toString()
 
 val Project.pomPackaging: String
     get() = (findProperty("POM_PACKAGING") ?: "jar").toString()
