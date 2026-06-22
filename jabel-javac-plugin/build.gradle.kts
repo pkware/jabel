@@ -8,7 +8,7 @@ val jabelVersion: String by project
 version = jabelVersion
 
 dependencies {
-    implementation(platform("net.bytebuddy:byte-buddy-parent:1.14.9"))
+    implementation(platform("net.bytebuddy:byte-buddy-parent:1.18.10"))
     implementation("net.bytebuddy:byte-buddy")
     implementation("net.bytebuddy:byte-buddy-agent")
     implementation("net.java.dev.jna:jna:5.13.0")
